@@ -373,6 +373,23 @@ xdescribe("A spec", function() {
 });
 
 /**
+ ## Exclusive Suites
+ Suites can be exclusive with the `fdescribe` function. These suites and any specs inside them are exclusive when run and thus only their results will appear in the results.
+ */
+fdescribe("An exclusive spec", function() {
+  var foo;
+
+  beforeEach(function() {
+    foo = 0;
+    foo += 1;
+  });
+
+  it("is just a function, so it can contain any code", function() {
+    expect(foo).toEqual(1);
+  });
+});
+
+/**
  ## Pending Specs
  Pending specs do not run, but their names will show up in the results as `pending`.
  */
@@ -396,6 +413,32 @@ describe("Pending specs", function() {
   it("can be declared by calling 'pending' in the spec body", function() {
     expect(true).toBe(false);
     pending('this is why it is pending');
+  });
+});
+
+/**
+ ## Exclusive Specs
+ Exclusive specs disable all of the other specs.
+ */
+
+describe("Exclusive specs", function() {
+
+  /** Any spec declared with `fit` is marked as exclusive.
+   */
+  fit("can be declared 'fit'", function() {
+    expect(true).toBe(false);
+  });
+  
+  /** Any other spec marked as `fit` will also be marked as exclusive.
+   */
+  fit("can also be declared 'fit'", function() {
+    expect(true).toBe(false);
+  });
+
+  /** This test will be marked `pending` because there now exists exclusive specs in the suite
+   */
+  it("can be 'pending' if there are exclusive specs", function() {
+    expect(true).toBe(false);
   });
 });
 
